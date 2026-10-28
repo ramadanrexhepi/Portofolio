@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ramadan Redzepovski</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --desk: #d9d5cc;
+            --paper: #f7f4ec;
+            --ink: #1b1b1b;
+            --ink-soft: #55524b;
+            --rule: #1b1b1b;
+            --faint: #c9c3b6;
+            --accent: #b3261e; /* red stamp ink */
+            --mono: 'IBM Plex Mono', 'Courier New', monospace;
+            --head: 'Space Mono', 'Courier New', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--mono);
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--ink);
+            background: var(--desk);
+            padding: 3rem 1rem;
+        }
+
+        /* ---------- The sheet of paper ---------- */
+        .sheet {
+            position: relative;
+            max-width: 820px;
+            margin: 0 auto;
+            background: var(--paper);
+            padding: 4rem 4.5rem 3rem;
+            box-shadow:
+                0 1px 1px rgba(0,0,0,0.08),
+                0 8px 24px rgba(0,0,0,0.12),
+                0 30px 60px rgba(0,0,0,0.08);
+        }
+
+        /* subtle paper grain */
+        .sheet::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.35;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.4 0 0 0 0 0.37 0 0 0 0 0.3 0 0 0 0.25 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+
+        .sheet > * { position: relative; }
+
+        a { color: var(--ink); }
+
+        /* ---------- Top bar ---------- */
+        .doc-meta {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--ink-soft);
+            border-bottom: 1px solid var(--rule);
+            padding-bottom: 0.6rem;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem 1.5rem;
+            margin: 0.8rem 0 0;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        nav a {
+            text-decoration: none;
+            border-bottom: 1px dashed transparent;
+        }
+
+        nav a:hover { border-bottom-color: var(--ink); }
+
+        nav a::before { content: '['; color: var(--ink-soft); }
+        nav a::after  { content: ']'; color: var(--ink-soft); }
+
+        /* ---------- Header ---------- */
+        header {
+            padding: 4rem 0 3rem;
+            border-bottom: 3px double var(--rule);
+        }
+
+        .label {
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--ink-soft);
+        }
+
+        h1 {
+            font-family: var(--head);
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin: 0.6rem 0 1rem;
+            min-height: 1.1em;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 0.55em;
+            height: 0.9em;
+            background: var(--ink);
+            margin-left: 4px;
+            vertical-align: -0.05em;
+            animation: blink 1s steps(1) infinite;
+        }
+
+        @keyframes blink { 50% { opacity: 0; } }
+
+        .role {
+            font-family: var(--head);
+            font-size: 1.05rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 1.5rem;
+        }
+
+        .intro { max-width: 60ch; margin-bottom: 1.5rem; }
+
+        .facts {
+            display: grid;
+            grid-template-columns: max-content 1fr;
+            gap: 0.2rem 1.5rem;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
+        .facts dt { color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.08em; }
+
+        .btn {
+            display: inline-block;
+            font-family: var(--head);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-decoration: none;
+            color: var(--ink);
+            background: transparent;
+            border: 2px solid var(--ink);
+            padding: 0.6rem 1.2rem;
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+        }
+
+        .btn:hover { background: var(--ink); color: var(--paper); }
+
+        .stamp {
+            position: absolute;
+            top: 4.5rem;
+            right: 0;
+            transform: rotate(-8deg);
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            font-family: var(--head);
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 0.4rem 0.8rem;
+            opacity: 0.8;
+        }
+
+        /* ---------- Sections ---------- */
+        section {
+            padding: 3rem 0;
+            border-bottom: 1px dashed var(--faint);
+            scroll-margin-top: 1rem;
+        }
+
+        h2 {
+            font-family: var(--head);
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            margin-bottom: 1.8rem;
+        }
+
+        h2 .num { color: var(--ink-soft); font-weight: 400; }
+
+        h2::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--rule);
+            transform: translateY(-0.3em);
+        }
+
+        p + p { margin-top: 1rem; }
+
+        /* Skills: printed table */
+        .skills {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .skills th, .skills td {
+            text-align: left;
+            vertical-align: top;
+            padding: 0.7rem 0.8rem 0.7rem 0;
+            border-bottom: 1px solid var(--faint);
+        }
+
+        .skills th {
+            width: 34%;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 0.8rem;
+        }
+
+        .skills tr:first-child th, .skills tr:first-child td { border-top: 1px solid var(--rule); }
+        .skills tr:last-child th, .skills tr:last-child td { border-bottom: 1px solid var(--rule); }
+
+        /* Projects */
+        .project {
+            display: grid;
+            grid-template-columns: 3rem 1fr;
+            gap: 1rem;
+            padding: 1.2rem 0;
+            border-top: 1px solid var(--faint);
+        }
+
+        .project:last-child { border-bottom: 1px solid var(--faint); }
+
+        .project .idx { color: var(--ink-soft); font-size: 0.85rem; padding-top: 0.15rem; }
+
+        .project h3 {
+            font-family: var(--head);
+            font-size: 1.05rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.4rem;
+        }
+
+        .tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            border: 1px solid var(--ink-soft);
+            color: var(--ink-soft);
+            padding: 0 0.4rem;
+            margin-left: 0.5rem;
+            vertical-align: middle;
+        }
+
+        .project p { margin-bottom: 0.6rem; }
+
+        .project a, .project .note {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .project .note { color: var(--ink-soft); }
+
+        .project .stack {
+            font-size: 0.8rem;
+            color: var(--ink-soft);
+            margin-bottom: 0.6rem;
+        }
+
+        .project .stack::before { content: 'Stack: '; text-transform: uppercase; letter-spacing: 0.08em; }
+
+        .project ul, .job ul {
+            list-style: none;
+            margin: 0 0 0.8rem;
+        }
+
+        .project li, .job li {
+            padding-left: 1.4rem;
+            position: relative;
+        }
+
+        .project li::before, .job li::before {
+            content: '–';
+            position: absolute;
+            left: 0.2rem;
+            color: var(--ink-soft);
+        }
+
+        .project.featured {
+            border: 2px solid var(--ink);
+            padding: 1.4rem 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .project.featured + .project { border-top: none; }
+
+        /* Experience */
+        .job-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 0.25rem 1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .job h3 {
+            font-family: var(--head);
+            font-size: 1.05rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .job .where {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--ink-soft);
+        }
+
+        .job .summary { margin-bottom: 0.8rem; }
+
+        /* Contact form: fill-in-the-blank */
+        .contact-form { display: grid; gap: 1.4rem; margin-top: 1.8rem; max-width: 560px; }
+
+        .field label {
+            display: block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--ink-soft);
+            margin-bottom: 0.2rem;
+        }
+
+        .field input, .field textarea {
+            width: 100%;
+            font: inherit;
+            color: var(--ink);
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--ink);
+            padding: 0.4rem 0;
+            outline: none;
+            resize: vertical;
+        }
+
+        .field textarea {
+            border: 1px solid var(--ink);
+            padding: 0.6rem;
+            background-image: repeating-linear-gradient(transparent, transparent 1.65rem, var(--faint) 1.65rem, var(--faint) calc(1.65rem + 1px));
+            line-height: 1.65rem;
+        }
+
+        .field input:focus, .field textarea:focus { border-color: var(--accent); }
+
+        .field input::placeholder, .field textarea::placeholder { color: #9a958a; }
+
+        .contact-form .btn { justify-self: start; }
+
+        /* ---------- Footer ---------- */
+        footer {
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--ink-soft);
+        }
+
+        .social { display: flex; gap: 1rem; }
+
+        .social a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            text-decoration: none;
+            color: var(--ink);
+        }
+
+        .social a:hover { text-decoration: underline; }
+
+        /* ---------- Reveal on scroll ---------- */
+        .reveal { opacity: 0; transform: translateY(12px); transition: opacity 0.6s, transform 0.6s; }
+        .reveal.visible { opacity: 1; transform: none; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .reveal { opacity: 1; transform: none; transition: none; }
+            .cursor { animation: none; }
+        }
+
+        /* ---------- Mobile ---------- */
+        @media (max-width: 640px) {
+            body { padding: 0; font-size: 14px; }
+            .sheet { padding: 2rem 1.25rem 2rem; box-shadow: none; }
+            header { padding: 2.5rem 0 2rem; }
+            .stamp { position: static; display: inline-block; margin-bottom: 1rem; }
+            .skills th, .skills td { display: block; width: 100%; padding-right: 0; }
+            .skills th { border-bottom: none; padding-bottom: 0; }
+            .skills tr:first-child td { border-top: none; }
+            .skills tr:last-child th { border-bottom: none; }
+            .project { grid-template-columns: 1fr; gap: 0.2rem; }
+        }
+
+        /* ---------- Real printing ---------- */
+        @media print {
+            body { background: none; padding: 0; }
+            .sheet { box-shadow: none; padding: 0; }
+            .sheet::before, nav, .contact-form, .cursor { display: none; }
+            .reveal { opacity: 1; transform: none; }
+        }
+    </style>
+</head>
+<body>
+    <main class="sheet" id="home">
+
+        <div class="doc-meta">
+            <span>Doc. No. RR-2026</span>
+            <span>Portfolio / Curriculum</span>
+            <span>Sheet 01 of 01</span>
+        </div>
+
+        <nav>
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+
+        <header>
+            <div class="stamp">Open to work</div>
+            <p class="label">// Name</p>
+            <h1><span id="typed">Ramadan Redzepovski</span><span class="cursor"></span></h1>
+            <p class="role">Full Stack Developer &amp; IT/Systems Administrator</p>
+            <p class="intro">Bridging software and infrastructure &mdash; building full-stack apps while managing secure, efficient IT systems.</p>
+            <dl class="facts">
+                <dt>Language</dt><dd>Proficient in English</dd>
+                <dt>Traits</dt><dd>Welcomes challenges, fast learner, problem solver</dd>
+            </dl>
+            <a href="#contact" class="btn">Get in touch &rarr;</a>
+        </header>
+
+        <section id="about" class="reveal">
+            <h2><span class="num">01</span> About</h2>
+            <p>Hello! I'm a passionate developer with over 5 years of experience in creating digital solutions that bridge the gap between design and technology. I specialize in full-stack development, with expertise in modern frameworks and a keen eye for user experience.</p>
+            <p>When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or sharing knowledge with the developer community. I believe in continuous learning and staying ahead of the curve in this ever-evolving field.</p>
+            <p>My goal is to create applications that not only function flawlessly but also provide meaningful and delightful experiences for users.</p>
+        </section>
+
+        <section id="experience" class="reveal">
+            <h2><span class="num">02</span> Experience</h2>
+            <article class="job">
+                <div class="job-head">
+                    <h3>IT Technician</h3>
+                    <span class="where">YKHC &middot; Bethel, Alaska</span>
+                </div>
+                <p class="summary">Service desk and systems support for clinics and offices, including remote village sites.</p>
+                <ul>
+                    <li>Install, configure and troubleshoot dental imaging systems (MiPACS, CliniView, DEXIS and Gendex sensors) and Dentrix practice software.</li>
+                    <li>Provision Active Directory accounts for new-employee onboarding and help migrate users to a standardized login format.</li>
+                    <li>Support VMware virtual environments, including VMware Horizon virtual desktops, troubleshooting user sessions and access.</li>
+                    <li>Write SQL Server queries to report on and correct data across business applications.</li>
+                    <li>Diagnose disk, print-queue and scan-to-folder issues (Kofax AutoStore, Konica Minolta MFPs) on workstations and servers.</li>
+                    <li>Provide on-site AV and hybrid Zoom support for board meetings.</li>
+                </ul>
+            </article>
+        </section>
+
+        <section id="skills" class="reveal">
+            <h2><span class="num">03</span> Skills &amp; Expertise</h2>
+            <table class="skills">
+                <tr><th>Frontend</th><td>React, Vue.js, Angular, HTML5, CSS3, JavaScript, TypeScript</td></tr>
+                <tr><th>Backend</th><td>Node.js, Next.js, PHP, Python, Express, ASP.NET, RESTful APIs</td></tr>
+                <tr><th>Database &amp; Cloud</th><td>PostgreSQL, SQL Server, MySQL, MongoDB, Google Cloud, Data Structures, Data Analysis</td></tr>
+                <tr><th>Tools &amp; Platforms</th><td>Git, GitHub, XAMPP, VS Code, Flutter, VMware Horizon, SAAIT</td></tr>
+                <tr><th>IT Support &amp; Networking</th><td>Windows &amp; Mac Troubleshooting, Active Directory, VMware &amp; Virtualization, CompTIA A+ Prep, Networking Basics</td></tr>
+                <tr><th>Languages</th><td>C#, VB.NET, SQL, JavaScript, PHP, Python</td></tr>
+            </table>
+        </section>
+
+        <section id="projects" class="reveal">
+            <h2><span class="num">04</span> Featured Projects</h2>
+
+            <article class="project featured">
+                <span class="idx">04.1</span>
+                <div>
+                    <h3>Zakazhi AI <span class="tag">Prototype</span></h3>
+                    <p>An AI phone receptionist for private clinics in North Macedonia. It answers calls 24/7 in Macedonian, Albanian and English, takes appointment requests, and sends them to the clinic's receptionist to approve with one tap before calling the patient back to confirm.</p>
+                    <ul>
+                        <li>Clinic dashboard with call log, live-call view, appointments and a day/week/month calendar with drag-and-drop.</li>
+                        <li>Approval flow over WhatsApp and Viber, plus three scheduling modes, including support for clinics still using a paper appointment book.</li>
+                        <li>Full interface in three languages and a separate platform-owner area for revenue and clinic management.</li>
+                        <li>Built around clear rules: AI disclosure on every call, no medical data stored, and humans make the final booking decision.</li>
+                    </ul>
+                    <p class="stack">React, Vite, TypeScript, PostgreSQL, i18n (MK / SQ / EN), voice AI</p>
+                    <span class="note">Demo available on request</span>
+                </div>
+            </article>
+
+            <article class="project">
+                <span class="idx">04.2</span>
+                <div>
+                    <h3>Balkan Social Commerce Platform <span class="tag">Early development</span></h3>
+                    <p>A Shopier-style platform for the Balkans that lets small sellers, including those who sell through Instagram and other social media, open an online store, list products and accept payments without building their own website.</p>
+                    <p class="stack">React, TypeScript</p>
+                </div>
+            </article>
+
+            <article class="project">
+                <span class="idx">04.3</span>
+                <div>
+                    <h3>Three Stars Cafe Website <span class="tag">Live</span></h3>
+                    <p>A full multilingual website for a coffee shop in Bethel, Alaska. It includes an online menu with a sticky category bar, a coffee-toned design, and a QR code customers scan in the shop to open it.</p>
+                    <p class="stack">React, JavaScript, CSS, i18n</p>
+                    <a href="https://www.threestarscafe.online" target="_blank" rel="noopener">Visit site &rarr;</a>
+                </div>
+            </article>
+
+            <article class="project">
+                <span class="idx">04.4</span>
+                <div>
+                    <h3>Weather App</h3>
+                    <p>A weather app built with React + TypeScript + Tailwind CSS, featuring real-time forecasts, interactive weather maps, smart suggestions, climate news, and more.</p>
+                    <a href="https://github.com/ramadanrexhepi/weather-app" target="_blank" rel="noopener">View on GitHub &rarr;</a>
+                </div>
+            </article>
+
+            <article class="project">
+                <span class="idx">04.5</span>
+                <div>
+                    <h3>Habit <span class="tag">In progress</span></h3>
+                    <p>A Flutter app that helps users build and track daily habits, with a clean UI, animated screens, and Firebase authentication.</p>
+                    <a href="https://github.com/ramadanrexhepi/habit" target="_blank" rel="noopener">View on GitHub &rarr;</a>
+                </div>
+            </article>
+        </section>
+
+        <section id="contact" class="reveal">
+            <h2><span class="num">05</span> Let's Work Together</h2>
+            <p>Have a project in mind? I'd love to hear about it. Let's discuss how we can bring your ideas to life.</p>
+            <form class="contact-form" onsubmit="handleSubmit(event)">
+                <div class="field">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" placeholder="Your name" required>
+                </div>
+                <div class="field">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                </div>
+                <div class="field">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="5" placeholder="Your message" required></textarea>
+                </div>
+                <button type="submit" class="btn">Send message</button>
+            </form>
+        </section>
+
+        <footer>
+            <span>&copy; 2026 Ramadan Redzepovski</span>
+            <div class="social">
+                <a href="https://github.com/ramadanrexhepi" target="_blank" rel="noopener"><i class="fab fa-github"></i> GitHub</a>
+                <a href="https://www.linkedin.com/in/ramadanrexhepi/" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                <a href="https://www.instagram.com/rramadan01/" target="_blank" rel="noopener"><i class="fab fa-instagram"></i> Instagram</a>
+            </div>
+            <span>— End of document —</span>
+        </footer>
+    </main>
+
+    <script>
+        // Typewriter effect on the name
+        window.addEventListener('load', () => {
+            const el = document.getElementById('typed');
+            const text = el.textContent;
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            el.textContent = '';
+            let i = 0;
+            (function type() {
+                if (i < text.length) {
+                    el.textContent += text.charAt(i++);
+                    setTimeout(type, 90);
+                }
+            })();
+        });
+
+        // Reveal sections on scroll
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Form submission (still simulated — hook up a service like Formspree to receive real messages)
+        function handleSubmit(event) {
+            event.preventDefault();
+            const btn = event.target.querySelector('button');
+            const original = btn.textContent;
+            btn.textContent = 'Sending...';
+            btn.disabled = true;
+            setTimeout(() => {
+                btn.textContent = 'Message sent ✓';
+                setTimeout(() => {
+                    btn.textContent = original;
+                    btn.disabled = false;
+                    event.target.reset();
+                }, 2000);
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
